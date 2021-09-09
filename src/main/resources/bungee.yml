@@ -1,0 +1,4 @@
+name: Testbungee
+version: ${project.version}
+main: gg.bridgesyndicate.testbungee.Testbungee
+description: Bungee Test
