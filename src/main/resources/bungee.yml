@@ -1,4 +1,4 @@
-name: Testbungee
+name: SyndicateBungee
 version: ${project.version}
-main: gg.bridgesyndicate.testbungee.Testbungee
+main: gg.bridgesyndicate.bungee.PluginMain
 description: Bungee Test

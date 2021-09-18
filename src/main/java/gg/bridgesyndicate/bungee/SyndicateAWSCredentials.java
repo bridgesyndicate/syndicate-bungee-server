@@ -1,4 +1,4 @@
-package gg.bridgesyndicate.testbungee;
+package gg.bridgesyndicate.bungee;
 
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
