@@ -8,6 +8,9 @@ import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.DeliverCallback;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.TimeoutException;
 
 public class RabbitListener implements Runnable {
@@ -20,18 +23,28 @@ public class RabbitListener implements Runnable {
 
     @Override
     public void run() {
-        ConnectionFactory factory = new ConnectionFactory();
-        factory.setHost("localhost");
-        Channel channel = null;
-        String queueName = null;
+	Channel channel = null;
+	String queueName = null;
         try {
+	    ConnectionFactory factory = new ConnectionFactory();
+	    String rabbitUri = System.getenv("RABBIT_URI");
+	    if (rabbitUri != null){
+		factory.setUri(rabbitUri);
+		factory.setUsername("AmazonMqUsername");
+		factory.setPassword("AmazonMqPassword");
+		factory.useSslProtocol();
+	    } else {
+		factory.setHost("host.docker.internal");
+	    }
             Connection connection = factory.newConnection();
             channel = connection.createChannel();
             channel.exchangeDeclare(EXCHANGE_NAME, "fanout");
             queueName = channel.queueDeclare().getQueue();
             channel.queueBind(queueName, EXCHANGE_NAME, "");
-        } catch (IOException | TimeoutException ioException) {
-            ioException.printStackTrace();
+        } catch (IOException | TimeoutException |
+		 URISyntaxException | NoSuchAlgorithmException |
+		 KeyManagementException exception) {
+            exception.printStackTrace();
         }
         System.out.println("Waiting for warp messages.");
         ObjectMapper objectMapper = new ObjectMapper();
