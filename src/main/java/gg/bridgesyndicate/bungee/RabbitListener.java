@@ -23,27 +23,28 @@ public class RabbitListener implements Runnable {
 
     @Override
     public void run() {
-	Channel channel = null;
-	String queueName = null;
+        Channel channel = null;
+        String queueName = null;
         try {
-	    ConnectionFactory factory = new ConnectionFactory();
-	    String rabbitUri = System.getenv("RABBIT_URI");
-	    if (rabbitUri != null){
-		factory.setUri(rabbitUri);
-		factory.setUsername("AmazonMqUsername");
-		factory.setPassword("AmazonMqPassword");
-		factory.useSslProtocol();
-	    } else {
-		factory.setHost("host.docker.internal");
-	    }
+            ConnectionFactory factory = new ConnectionFactory();
+            String rabbitUri = System.getenv("RABBIT_URI");
+            if (rabbitUri != null) {
+                factory.setUri(rabbitUri);
+                factory.setUsername("AmazonMqUsername");
+                factory.setPassword("AmazonMqPassword");
+                factory.useSslProtocol();
+            } else {
+                System.out.println("No RABBIT_URI, using 'rabbit'");
+                factory.setHost("rabbit");
+            }
             Connection connection = factory.newConnection();
             channel = connection.createChannel();
             channel.exchangeDeclare(EXCHANGE_NAME, "fanout");
             queueName = channel.queueDeclare().getQueue();
             channel.queueBind(queueName, EXCHANGE_NAME, "");
         } catch (IOException | TimeoutException |
-		 URISyntaxException | NoSuchAlgorithmException |
-		 KeyManagementException exception) {
+                URISyntaxException | NoSuchAlgorithmException |
+                KeyManagementException exception) {
             exception.printStackTrace();
         }
         System.out.println("Waiting for warp messages.");

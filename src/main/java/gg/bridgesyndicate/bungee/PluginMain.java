@@ -3,7 +3,10 @@ package gg.bridgesyndicate.bungee;
 import com.amazonaws.http.HttpMethodName;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ProxyServer;
+import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.PostLoginEvent;
 import net.md_5.bungee.api.plugin.Listener;
@@ -11,6 +14,7 @@ import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.event.EventHandler;
 
 import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.net.URISyntaxException;
 import java.util.UUID;
 
@@ -21,6 +25,17 @@ public final class PluginMain extends Plugin implements Listener {
         getLogger().info("Yay! It loads!");
         proxy.getPluginManager().registerListener(this, this);
         this.getProxy().getScheduler().runAsync(this, new RabbitListener(this));
+        if ( System.getenv("LOBBY_HOSTNAME") != null ) {
+            String hostname = System.getenv("LOBBY_HOSTNAME");
+            System.out.println("Using LOBBY_HOSTNAME from env: " + hostname);
+            ServerInfo serverInfo = proxy.getServerInfo("lobby");
+            String hostKey = "lobby";
+            serverInfo = proxy.constructServerInfo(
+                    hostKey, new InetSocketAddress(hostname, 25565),
+                    "Welcome to the lobby", false);
+            proxy.getServers().put(hostKey, serverInfo);
+            System.out.println("init server list: " + proxy.getServers().toString());
+        }
     }
 
     @EventHandler
@@ -52,10 +67,10 @@ public final class PluginMain extends Plugin implements Listener {
                 KickCode kickCode = KickCode.deserialize(body);
                 player.sendMessage(new ComponentBuilder("You are not registered").color(ChatColor.RED).create());
                 player.sendMessage(new ComponentBuilder("Your code is " + kickCode.kickCode).color(ChatColor.RED).create());
-//                TextComponent message = new TextComponent("Click me");
-//                message.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, body));
-//                player.sendMessage(message);
-//                player.disconnect(new TextComponent("https://www.hero.net/"));
+                TextComponent message = new TextComponent("Click me to copy your code");
+                message.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "http://www.bridgesyndicate.gg/?" +
+                        kickCode.kickCode));
+                player.sendMessage(message);
             } else {
                 player.sendMessage(new ComponentBuilder("Welcome registered player").color(ChatColor.WHITE).create());
             }

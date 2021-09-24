@@ -70,7 +70,6 @@ public class SyndicateWebServiceRequest {
 
     private String getDevelopmentEndpoint() {
         String host = "host.docker.internal:4567";
-        host = "localhost:4567";
         String protocol = "http";
         return (protocol + "://" + host);
     }
