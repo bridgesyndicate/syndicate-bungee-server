@@ -8,7 +8,7 @@ import java.net.URISyntaxException;
 public class TestHttpGet {
     public static void main(String[] args) throws URISyntaxException, IOException {
 //        UUID uuid = UUID.randomUUID();
-        boolean development = true;
+        boolean development = false;
         String uuid = "c5ca7535-2946-4cba-8863-511cc739c0c0";
         SyndicateWebServiceHttpClient syndicateWebServiceHttpClient =
                 new SyndicateWebServiceHttpClient("/auth/user/by-minecraft-uuid/" + uuid, HttpMethodName.GET, development);

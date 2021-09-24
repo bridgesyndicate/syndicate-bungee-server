@@ -33,7 +33,7 @@ public class KickCode {
             kickCode = objectMapper.readValue(json, KickCode.class);
         } catch (
                 JsonProcessingException e) {
-            System.err.println("Cannot parse game json.");
+            System.err.println("Cannot parse kick code.");
             e.printStackTrace();
         }
         return(kickCode);

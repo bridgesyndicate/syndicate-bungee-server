@@ -12,6 +12,7 @@ import net.md_5.bungee.api.event.PostLoginEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.event.EventHandler;
+import org.apache.http.HttpStatus;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -63,7 +64,7 @@ public final class PluginMain extends Plugin implements Listener {
             System.out.println("status was " + httpStatus);
             System.out.println(body);
 
-            if (httpStatus != 200) {
+            if (httpStatus == HttpStatus.SC_NOT_FOUND) {
                 KickCode kickCode = KickCode.deserialize(body);
                 player.sendMessage(new ComponentBuilder("You are not registered").color(ChatColor.RED).create());
                 player.sendMessage(new ComponentBuilder("Your code is " + kickCode.kickCode).color(ChatColor.RED).create());
@@ -71,8 +72,11 @@ public final class PluginMain extends Plugin implements Listener {
                 message.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "http://www.bridgesyndicate.gg/?" +
                         kickCode.kickCode));
                 player.sendMessage(message);
-            } else {
+            } else if (httpStatus == HttpStatus.SC_OK){
                 player.sendMessage(new ComponentBuilder("Welcome registered player").color(ChatColor.WHITE).create());
+            } else {
+                System.out.println("status was " + httpStatus);
+                player.sendMessage(new ComponentBuilder("Error. Some status other than 404 or 200.").color(ChatColor.WHITE).create());
             }
         } catch (IOException | URISyntaxException e) {
             e.printStackTrace();

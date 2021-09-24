@@ -49,13 +49,14 @@ public class SyndicateWebServiceHttpClient {
                 String key = iterator.next();
                 String value = headerMap.get(key);
                 httpGet.addHeader(key, value);
+                System.out.println("request header, " + key + " : " + value);
             }
             try (CloseableHttpResponse response = httpClient.execute(httpGet)) {
                 HttpEntity entity = response.getEntity();
                 if (entity != null) {
                     returnValueString = EntityUtils.toString(entity);
                     for (Header header : response.getAllHeaders()) {
-//                        System.out.println(header.getName() + " : " + header.getValue());
+                        System.out.println("response header, " + header.getName() + " : " + header.getValue());
                     }
                 }
                 return (response.getStatusLine().getStatusCode());
