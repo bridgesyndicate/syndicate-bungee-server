@@ -107,6 +107,11 @@ public class RabbitListener implements Runnable {
 
         public WarpMessage() {
         }
+
+        public WarpMessage(String player) {
+            this.player = player;
+            this.host = null;
+        }
     }
 
     public static void main(String[] args) throws IOException {

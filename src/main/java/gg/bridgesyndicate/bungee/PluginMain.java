@@ -74,6 +74,9 @@ public final class PluginMain extends Plugin implements Listener {
                 player.sendMessage(message);
             } else if (httpStatus == HttpStatus.SC_OK){
                 player.sendMessage(new ComponentBuilder("Welcome registered player").color(ChatColor.WHITE).create());
+                RabbitListener.WarpMessage warpMessage = new RabbitListener.WarpMessage(playerUUID.toString());
+                WarpUser warpUser = new WarpUser(this, warpMessage);
+                warpUser.warp();
             } else {
                 System.out.println("status was " + httpStatus);
                 player.sendMessage(new ComponentBuilder("Error. Some status other than 404 or 200.").color(ChatColor.WHITE).create());
