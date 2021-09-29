@@ -38,7 +38,9 @@ public class WarpUser {
             System.out.println("Cache is empty for " + warpMessage.getPlayer());
             return; // there is no cached entry
         }
+        System.out.println("Inet4Address: " + inet4Address);
         String host = inet4Address.getHostAddress();
+        System.out.println("Host: " + host);
         if ( (serverInfo = proxy.getServers().get(host)) == null){
             serverInfo = pluginMain.getProxy().constructServerInfo(
                     host, new InetSocketAddress(host, MINECRAFT_PORT),
