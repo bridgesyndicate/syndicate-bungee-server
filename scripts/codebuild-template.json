@@ -1,0 +1,52 @@
+{
+  "name": "syndicate-bungee-server",
+  "source": {
+    "type": "CODECOMMIT",
+    "location": "https://git-codecommit.us-west-2.amazonaws.com/v1/repos/syndicate-bungee-server",
+    "gitCloneDepth": 1,
+    "gitSubmodulesConfig": {
+      "fetchSubmodules": false
+    },
+    "insecureSsl": false
+  },
+  "secondarySources": [],
+  "sourceVersion": "refs/heads/master",
+  "secondarySourceVersions": [],
+  "artifacts": {
+    "type": "S3",
+    "location": "syndicate-bungee-server-codebuild-artifacts",
+    "path": "",
+    "namespaceType": "BUILD_ID",
+    "name": "syndicate-bungee-server-jars",
+    "packaging": "ZIP",
+    "overrideArtifactName": false,
+    "encryptionDisabled": false
+  },
+  "secondaryArtifacts": [],
+  "cache": {
+    "type": "NO_CACHE"
+  },
+  "environment": {
+    "type": "LINUX_CONTAINER",
+    "image": "aws/codebuild/standard:5.0",
+    "computeType": "BUILD_GENERAL1_SMALL",
+    "environmentVariables": [],
+    "privilegedMode": true,
+    "imagePullCredentialsType": "CODEBUILD"
+  },
+  "serviceRole": "arn:aws:iam::595508394202:role/codebuild-syndicate-bungee-server-service-role",
+  "timeoutInMinutes": 60,
+  "queuedTimeoutInMinutes": 480,
+  "encryptionKey": "arn:aws:kms:us-west-2:595508394202:alias/aws/s3",
+  "tags": [],
+  "badgeEnabled": false,
+  "logsConfig": {
+    "cloudWatchLogs": {
+      "status": "ENABLED"
+    },
+    "s3Logs": {
+      "status": "DISABLED",
+      "encryptionDisabled": false
+    }
+  }
+}
