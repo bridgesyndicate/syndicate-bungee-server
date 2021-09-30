@@ -29,9 +29,8 @@ public final class PluginMain extends Plugin implements Listener {
         if ( System.getenv("LOBBY_HOSTNAME") != null ) {
             String hostname = System.getenv("LOBBY_HOSTNAME");
             System.out.println("Using LOBBY_HOSTNAME from env: " + hostname);
-            ServerInfo serverInfo = proxy.getServerInfo("lobby");
             String hostKey = "lobby";
-            serverInfo = proxy.constructServerInfo(
+            ServerInfo serverInfo = proxy.constructServerInfo(
                     hostKey, new InetSocketAddress(hostname, 25565),
                     "Welcome to the lobby", false);
             proxy.getServers().put(hostKey, serverInfo);
