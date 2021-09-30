@@ -18,7 +18,7 @@ public class WarpUser {
     public WarpUser(PluginMain pluginMain, RabbitListener.WarpMessage warpMessage) {
         this.pluginMain = pluginMain;
         this.warpMessage = warpMessage;
-        this.warpCache = new WarpCache();
+        this.warpCache = WarpCache.getInstance();
     }
 
     public void warp() {
