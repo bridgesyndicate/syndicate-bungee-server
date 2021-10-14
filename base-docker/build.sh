@@ -1,6 +1,6 @@
 #!/bin/bash
 set -ve
-VERSION=01
+VERSION=02
 echo version $VERSION
 echo building with the contents of bungee-home
 echo edit if you don\'t have this directory

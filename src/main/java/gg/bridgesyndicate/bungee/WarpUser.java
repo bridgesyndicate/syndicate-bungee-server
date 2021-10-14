@@ -30,7 +30,7 @@ public class WarpUser {
     }
 
     private void warpWithCacheEntry() {
-        System.out.println("Warp " + warpMessage.getPlayer() + " with cache.");
+        System.out.println("warpWithCacheEntry " + warpMessage.getPlayer() + " with cache.");
         ServerInfo serverInfo;
         Inet4Address inet4Address = warpCache.getLruMap().get(UUID.fromString(warpMessage.getPlayer()));
         if (inet4Address == null) {
@@ -62,7 +62,7 @@ public class WarpUser {
     }
 
     private void warpWithMessage()  {
-        System.out.println("Warp " + warpMessage.getPlayer() + " to " + warpMessage.getHostname());
+        System.out.println("warpWithMessage " + warpMessage.getPlayer() + " to " + warpMessage.getHostname());
         ServerInfo serverInfo;
         if ( (serverInfo = proxy.getServers().get(warpMessage.getHostname())) == null){
             serverInfo = proxy.constructServerInfo(

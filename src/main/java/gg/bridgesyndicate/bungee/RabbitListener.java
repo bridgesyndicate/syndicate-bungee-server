@@ -52,9 +52,14 @@ public class RabbitListener implements Runnable {
         DeliverCallback deliverCallback = (consumerTag, delivery) -> {
             String message = new String(delivery.getBody(), "UTF-8");
             System.out.println("RabbitMQ: " + message);
-            WarpMessage warpMessage = objectMapper.readValue(message, WarpMessage.class);
-            WarpUser warpUser = new WarpUser(pluginMain, warpMessage);
-            warpUser.warp();
+            try {
+                WarpMessage warpMessage = objectMapper.readValue(message, WarpMessage.class);
+                WarpUser warpUser = new WarpUser(pluginMain, warpMessage);
+                warpUser.warp();
+            } catch (Exception e) {
+                e.printStackTrace();
+                System.out.println("could not deserialize warp message or warp user.");
+            }
         };
         try {
             channel.basicConsume(queueName, true, deliverCallback, consumerTag -> {

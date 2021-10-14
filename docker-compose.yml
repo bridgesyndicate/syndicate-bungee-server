@@ -2,14 +2,14 @@ version: "2.4"
 networks:
   rabbit:
     driver: bridge
-  lobby:
+  mc:
     driver: bridge
 services:
   bungee:
     image: 595508394202.dkr.ecr.us-west-2.amazonaws.com/syn-bungee-servers:latest
     networks:
       - rabbit
-      - lobby
+      - mc
     depends_on:
       - lobby
       - rabbit
@@ -26,10 +26,14 @@ services:
   lobby:
     image: 595508394202.dkr.ecr.us-west-2.amazonaws.com/syn-lobby:latest
     networks:
-      - lobby
+      - mc
   rabbit:
     image: rabbitmq:3
     networks:
       - rabbit
     ports:
       - "5672:5672"
+  game:
+    image: 595508394202.dkr.ecr.us-west-2.amazonaws.com/syn-bridge-servers:latest
+    networks:
+      - mc

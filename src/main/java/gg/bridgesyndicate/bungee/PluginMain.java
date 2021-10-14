@@ -25,7 +25,9 @@ public final class PluginMain extends Plugin implements Listener {
         ProxyServer proxy = this.getProxy();
         getLogger().info("Yay! It loads!");
         proxy.getPluginManager().registerListener(this, this);
-        this.getProxy().getScheduler().runAsync(this, new RabbitListener(this));
+        proxy.getPluginManager().registerListener(this, new KickListener(this));
+        proxy.getScheduler().runAsync(this, new RabbitListener(this));
+
         if ( System.getenv("LOBBY_HOSTNAME") != null ) {
             String hostname = System.getenv("LOBBY_HOSTNAME");
             System.out.println("Using LOBBY_HOSTNAME from env: " + hostname);
@@ -43,7 +45,7 @@ public final class PluginMain extends Plugin implements Listener {
         ProxiedPlayer player = event.getPlayer();
         UUID playerUUID = player.getUniqueId();
         System.out.println("onlogin, uuid: " + playerUUID + ", " + "name: " +
-                player.getName() + "displayName: " + player.getDisplayName());
+                player.getName() + " displayName: " + player.getDisplayName());
 
         SyndicateWebServiceHttpClient syndicateWebServiceHttpClient;
         boolean development = false;
