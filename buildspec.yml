@@ -25,7 +25,6 @@ phases:
       - echo Build completed on `date`
       - echo Pushing the Docker images...
       - docker push $REPOSITORY_URI:latest
-      - docker push $REPOSITORY_URI:$IMAGE_TAG
       - aws ecs update-service --cluster SyndicateECSCluster --service arn:aws:ecs:us-west-2:595508394202:service/SyndicateECSCluster/SyndicateBungeeECSServiceV03 --force-new-deployment
 artifacts:
   files:
