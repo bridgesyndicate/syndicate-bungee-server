@@ -19,8 +19,7 @@ phases:
       - echo Building the Docker image...
       - echo running docker build
       - docker build -t $REPOSITORY_URI:latest .
-      - docker tag $REPOSITORY_URI:latest
-      - echo not tagging with $REPOSITORY_URI:$IMAGE_TAG
+      - echo not tagging with $REPOSITORY_URI:latest with $REPOSITORY_URI:$IMAGE_TAG
   post_build:
     commands:
       - echo Build completed on `date`
