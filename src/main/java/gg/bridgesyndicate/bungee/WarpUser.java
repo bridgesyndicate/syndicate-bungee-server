@@ -10,84 +10,85 @@ import java.net.UnknownHostException;
 import java.util.UUID;
 
 public class WarpUser {
-    private final RabbitListener.WarpMessage warpMessage;
+    private final WarpMessage warpMessage;
     private final WarpCache  warpCache;
-    private final int MINECRAFT_PORT = 25565;
     private final ProxyServer proxy;
 
-    public WarpUser(PluginMain pluginMain, RabbitListener.WarpMessage warpMessage) {
+    public WarpUser(PluginMain pluginMain, WarpMessage warpMessage) {
         this.proxy = pluginMain.getProxy();
         this.warpMessage = warpMessage;
         this.warpCache = WarpCache.getInstance();
     }
 
-    public void warp() {
-        if (warpMessage.getHost() == null) {
-            warpWithCacheEntry();
+    private boolean hasWarpTarget() {
+        return warpMessage.getHostname() != null;
+    }
+
+    private boolean isClearCacheMessage() {
+        String LOBBY_HOSTNAME = "lobby";
+        return warpMessage.getHostname().equals(LOBBY_HOSTNAME);
+    }
+
+    private void clearCacheForUser(UUID uuid) {
+        System.out.println("clearCacheForUser: " + uuid);
+        warpCache.getLruMap().remove(uuid);
+    }
+
+    private Inet4Address getCachedHostForUUID(String minecraft_uuid) {
+        UUID uuid = UUID.fromString(minecraft_uuid);
+        Inet4Address inet4Address = warpCache.getLruMap().get(uuid);
+        if (inet4Address == null)
+            System.out.println("Cache is empty for uuid: " + uuid);
+        return inet4Address;
+    }
+
+    private ServerInfo getServerInfoForHost(Inet4Address target) {
+        String hostname = target.getHostAddress();
+        ServerInfo serverInfo = proxy.getServers().get(hostname);
+        if (serverInfo == null) {
+            System.out.println("Make new ServerInfo for " + hostname);
+            int MINECRAFT_PORT = 25565;
+            serverInfo = proxy.constructServerInfo(hostname,
+                    new InetSocketAddress(hostname, MINECRAFT_PORT),
+                    "Welcome to " + hostname, false);
+            proxy.getServers().put(hostname, serverInfo);
         } else {
-            warpWithMessage();
+            System.out.println("existing ServerInfo for " + hostname);
+        }
+        return serverInfo;
+    }
+
+    private void warpPlayerToServer(ServerInfo serverInfo) {
+        ProxiedPlayer player;
+        if ( (player = proxy.getPlayer(UUID.fromString(warpMessage.getMinecraftUuid()))) != null){
+            System.out.println("Found " + warpMessage.getMinecraftUuid() + " as " + player.getDisplayName() + " warping to "
+                    + serverInfo.getName());
+            player.connect(serverInfo);
         }
     }
 
-    private void warpWithCacheEntry() {
-        System.out.println("warpWithCacheEntry " + warpMessage.getPlayer() + " with cache.");
-        ServerInfo serverInfo;
-        Inet4Address inet4Address = warpCache.getLruMap().get(UUID.fromString(warpMessage.getPlayer()));
-        if (inet4Address == null) {
-            System.out.println("Cache is empty for " + warpMessage.getPlayer());
-            return; // there is no cached entry
-        }
-        System.out.println("Inet4Address: " + inet4Address);
-        String host = inet4Address.getHostAddress();
-        System.out.println("Host: " + host);
+    private void addWarpToCache(Inet4Address target) {
+        warpCache.getLruMap().put(UUID.fromString(warpMessage.getMinecraftUuid()), target);
+    }
 
-        if (host.equals("127.0.0.1")){
-            serverInfo = proxy.getServers().get("lobby");
+    public void warp() throws UnknownHostException {
+        Inet4Address target;
+        if (!hasWarpTarget()) {
+            if ((target = getCachedHostForUUID(warpMessage.getMinecraftUuid())) == null) {
+                System.out.println("No target for newly-joined user: " + warpMessage.getMinecraftUuid());
+                return;
+            }
         } else {
-            if ((serverInfo = proxy.getServers().get(host)) == null) {
-                serverInfo = proxy.constructServerInfo(
-                        host, new InetSocketAddress(host, MINECRAFT_PORT),
-                        "Welcome to " + host, false);
-                proxy.getServers().put(host, serverInfo);
-                System.out.println("warpWithCacheEntry server list: " + proxy.getServers().toString());
+            if (isClearCacheMessage()) {
+                clearCacheForUser(UUID.fromString(warpMessage.getMinecraftUuid()));
+                return;
+            } else {
+                target = (Inet4Address) Inet4Address.getByName(warpMessage.getHostname());
             }
         }
-        // find and warp the user
-        ProxiedPlayer player;
-        if ( (player = proxy.getPlayer(UUID.fromString(warpMessage.getPlayer()))) != null){
-            System.out.println("Found " + warpMessage.getPlayer() + " as " + player.getDisplayName() + " warping to "
-                    + host);
-            player.connect(serverInfo);
-        }
-    }
-
-    private void warpWithMessage()  {
-        System.out.println("warpWithMessage " + warpMessage.getPlayer() + " to " + warpMessage.getHostname());
-        ServerInfo serverInfo;
-        if ( (serverInfo = proxy.getServers().get(warpMessage.getHostname())) == null){
-            serverInfo = proxy.constructServerInfo(
-                    warpMessage.getHost(), new InetSocketAddress(warpMessage.getHost(), MINECRAFT_PORT),
-                    "Welcome to " + warpMessage.getHostname(), false);
-            proxy.getServers().put(warpMessage.getHostname(), serverInfo);
-            System.out.println("warpWithMessage server list: " + proxy.getServers().toString());
-        }
-        // add the info to the cache
-        try {
-            warpCache.getLruMap()
-                    .put(UUID.fromString(warpMessage.getPlayer()),
-                            (Inet4Address) Inet4Address.getByName(warpMessage.getHost())); // this is localhost when lobby
-        } catch (UnknownHostException e) {
-            System.out.println("Cannot convert " + warpMessage.getHost() + " to InetAddress for addition to cache.");
-            e.printStackTrace();
-            return;
-        }
-        // find and warp the user
-        ProxiedPlayer player;
-        if ( (player = proxy.getPlayer(UUID.fromString(warpMessage.getPlayer()))) != null){
-            System.out.println("Found " + warpMessage.getPlayer() + " as " + player.getDisplayName() + " warping to "
-            + warpMessage.getHostname());
-            player.connect(serverInfo);
-        }
+        ServerInfo serverInfo = getServerInfoForHost(target);
+        warpPlayerToServer(serverInfo);
+        addWarpToCache(target);
     }
 }
 

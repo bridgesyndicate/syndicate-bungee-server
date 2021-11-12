@@ -27,6 +27,11 @@ services:
     image: 595508394202.dkr.ecr.us-west-2.amazonaws.com/syn-lobby:latest
     networks:
       - mc
+    environment:
+      SYNDICATE_ENV: development
+      AWS_REGION: us-west-2
+      AWS_ACCESS_KEY_ID: $DEV_AWS_ACCESS_KEY_ID
+      AWS_SECRET_KEY_ID: $DEV_AWS_SECRET_KEY
   rabbit:
     image: rabbitmq:3
     networks:
@@ -38,7 +43,10 @@ services:
     networks:
       - mc
     environment:
+      SYNDICATE_SKIP_SERVICE_CALLS: 1
       SYNDICATE_ENV: development
       AWS_REGION: us-west-2
+      AWS_ACCESS_KEY_ID: $DEV_AWS_ACCESS_KEY_ID
+      AWS_SECRET_KEY_ID: $DEV_AWS_SECRET_KEY
       SYNDICATE_MATCH_QUEUE_NAME: syndicate_development_games
       ECS_CONTAINER_METADATA_URI_V4: https://kenpublic.s3.amazonaws.com/2021-08-04/sAfyVbYGjZAJlKli/container-metadata.json

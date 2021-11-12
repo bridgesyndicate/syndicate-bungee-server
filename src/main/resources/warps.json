@@ -1,0 +1,44 @@
+{
+  "warp_list": [
+    {
+      "minecraft_uuid": "a062ba12-7a97-419c-8602-a2d0e2db3693",
+      "hostname": "173.248.7.49",
+      "port": 2556
+    },
+    {
+      "minecraft_uuid": "32704837-c049-44e0-a512-d688434351ce",
+      "hostname": "173.248.7.49",
+      "port": 2556
+    },
+    {
+      "minecraft_uuid": "b2388ed5-824b-47dd-920b-59557fe15659",
+      "hostname": "173.248.7.49",
+      "port": 2556
+    },
+    {
+      "minecraft_uuid": "6eea43bd-9da1-4e2f-b278-601a1fbbb3c1",
+      "hostname": "173.248.7.49",
+      "port": 2556
+    },
+    {
+      "minecraft_uuid": "3885af37-4148-4dfe-b4ed-581e103139c3",
+      "hostname": "173.248.7.49",
+      "port": 2556
+    },
+    {
+      "minecraft_uuid": "f7939242-49bd-46d3-9f73-144265b7bd88",
+      "hostname": "173.248.7.49",
+      "port": 2556
+    },
+    {
+      "minecraft_uuid": "ffc925e4-234f-4f2d-a873-8d4c8c68d399",
+      "hostname": "173.248.7.49",
+      "port": 2556
+    },
+    {
+      "minecraft_uuid": "b6fce681-907b-42dc-b7d7-251d130ad468",
+      "hostname": "173.248.7.49",
+      "port": 2556
+    }
+  ]
+}

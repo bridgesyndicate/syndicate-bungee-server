@@ -1,6 +1,5 @@
 package gg.bridgesyndicate.bungee;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
@@ -9,6 +8,7 @@ import com.rabbitmq.client.DeliverCallback;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.TimeoutException;
@@ -50,12 +50,12 @@ public class RabbitListener implements Runnable {
         System.out.println("Waiting for warp messages.");
         ObjectMapper objectMapper = new ObjectMapper();
         DeliverCallback deliverCallback = (consumerTag, delivery) -> {
-            String message = new String(delivery.getBody(), "UTF-8");
+            String message = new String(delivery.getBody(), StandardCharsets.UTF_8);
             System.out.println("RabbitMQ: " + message);
             try {
-                WarpMessage warpMessage = objectMapper.readValue(message, WarpMessage.class);
-                WarpUser warpUser = new WarpUser(pluginMain, warpMessage);
-                warpUser.warp();
+                WarpList warpList = objectMapper.readValue(message, WarpList.class);
+                WarpUsers warpUsers = new WarpUsers(pluginMain, warpList);
+                warpUsers.warp();
             } catch (Exception e) {
                 e.printStackTrace();
                 System.out.println("could not deserialize warp message or warp user.");
@@ -68,67 +68,4 @@ public class RabbitListener implements Runnable {
             e.printStackTrace();
         }
     }
-
-    static class WarpMessage {
-        private String player;
-        private String host;
-
-        public String getHostname() {
-            return hostname;
-        }
-
-        public void setHostname(String hostname) {
-            this.hostname = hostname;
-        }
-
-        private String hostname;
-        private int port;
-
-
-        public String getHost() {
-            return host;
-        }
-
-        public void setHost(String host) {
-            this.host = host;
-        }
-
-
-        public int getPort() {
-            return port;
-        }
-
-        public void setPort(int port) {
-            this.port = port;
-        }
-
-        public String getPlayer() {
-            return player;
-        }
-
-        public void setPlayer(String player) {
-            this.player = player;
-        }
-
-        public WarpMessage() {
-        }
-
-        public WarpMessage(String player) {
-            this.player = player;
-            this.host = null;
-        }
-    }
-
-    public static void main(String[] args) throws IOException {
-        String json = "{\"player\":\"fff47ae2-dec5-4de8-9172-1ab9216b30e0\",\"host\":\"0.0.0.0\",\"port\":25565}";
-        WarpMessage warpMessage = null;
-        ObjectMapper objectMapper = new ObjectMapper();
-        try {
-            warpMessage = objectMapper.readValue(json, WarpMessage.class);
-        } catch (JsonProcessingException e) {
-            System.err.println("Cannot parse json");
-            e.printStackTrace();
-        }
-    }
-
 }
