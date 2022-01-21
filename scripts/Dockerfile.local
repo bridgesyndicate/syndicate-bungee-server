@@ -1,0 +1,3 @@
+FROM 595508394202.dkr.ecr.us-west-2.amazonaws.com/syn-bungee-servers
+WORKDIR /app/bungee-home
+ADD scripts/local-bungee-config.yml config.yml

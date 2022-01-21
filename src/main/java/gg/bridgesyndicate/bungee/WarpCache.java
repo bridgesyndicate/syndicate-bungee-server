@@ -23,4 +23,8 @@ public class WarpCache {
     public static WarpCache getInstance() {
         return Loader.INSTANCE;
     }
+
+    public boolean hasEntryFor(UUID id) {
+        return this.lruMap.get(id) != null;
+    }
 }

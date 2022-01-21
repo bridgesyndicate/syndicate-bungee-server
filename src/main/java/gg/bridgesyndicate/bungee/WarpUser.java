@@ -73,6 +73,7 @@ public class WarpUser {
 
     public void warp() throws UnknownHostException {
         Inet4Address target;
+
         if (!hasWarpTarget()) {
             if ((target = getCachedHostForUUID(warpMessage.getMinecraftUuid())) == null) {
                 System.out.println("No target for newly-joined user: " + warpMessage.getMinecraftUuid());
@@ -88,7 +89,9 @@ public class WarpUser {
         }
         ServerInfo serverInfo = getServerInfoForHost(target);
         warpPlayerToServer(serverInfo);
-        addWarpToCache(target);
+        if(warpMessage.isCached()) {
+            addWarpToCache(target);
+        }
     }
 }
 

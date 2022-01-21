@@ -6,7 +6,6 @@ import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.TextComponent;
-import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.PostLoginEvent;
 import net.md_5.bungee.api.plugin.Listener;
@@ -15,29 +14,20 @@ import net.md_5.bungee.event.EventHandler;
 import org.apache.http.HttpStatus;
 
 import java.io.IOException;
-import java.net.InetSocketAddress;
 import java.net.URISyntaxException;
 import java.util.UUID;
 
 public final class PluginMain extends Plugin implements Listener {
+
     @Override
     public void onEnable() {
         ProxyServer proxy = this.getProxy();
         getLogger().info("Yay! It loads!");
         proxy.getPluginManager().registerListener(this, this);
         proxy.getPluginManager().registerListener(this, new KickListener(this));
+        proxy.getPluginManager().registerListener(this, new ServerConnectListener(this));
         proxy.getScheduler().runAsync(this, new RabbitListener(this));
-
-        if ( System.getenv("LOBBY_HOSTNAME") != null ) {
-            String hostname = System.getenv("LOBBY_HOSTNAME");
-            System.out.println("Using LOBBY_HOSTNAME from env: " + hostname);
-            String hostKey = "lobby";
-            ServerInfo serverInfo = proxy.constructServerInfo(
-                    hostKey, new InetSocketAddress(hostname, 25565),
-                    "Welcome to the lobby", false);
-            proxy.getServers().put(hostKey, serverInfo);
-            System.out.println("init server list: " + proxy.getServers().toString());
-        }
+        System.out.println("init server list: " + proxy.getServers().toString());
     }
 
     @EventHandler
