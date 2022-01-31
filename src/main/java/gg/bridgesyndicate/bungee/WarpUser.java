@@ -13,8 +13,10 @@ public class WarpUser {
     private final WarpMessage warpMessage;
     private final WarpCache  warpCache;
     private final ProxyServer proxy;
+    private final PluginMain pluginMain;
 
     public WarpUser(PluginMain pluginMain, WarpMessage warpMessage) {
+        this.pluginMain = pluginMain;
         this.proxy = pluginMain.getProxy();
         this.warpMessage = warpMessage;
         this.warpCache = WarpCache.getInstance();
@@ -25,8 +27,7 @@ public class WarpUser {
     }
 
     private boolean isClearCacheMessage() {
-        String LOBBY_HOSTNAME = "lobby";
-        return warpMessage.getHostname().equals(LOBBY_HOSTNAME);
+        return warpMessage.getHostname().equals(pluginMain.LOBBY_HOSTNAME);
     }
 
     private void clearCacheForUser(UUID uuid) {
@@ -68,32 +69,34 @@ public class WarpUser {
     }
 
     private void addWarpToCache(Inet4Address target) {
+        if (target == null)
+            System.out.println("ERROR we should never add a null target to the cache.");
         warpCache.getLruMap().put(UUID.fromString(warpMessage.getMinecraftUuid()), target);
     }
 
     public void warp() throws UnknownHostException {
         Inet4Address target;
-
+        ServerInfo serverInfo;
         if (!hasWarpTarget()) {
             if ((target = getCachedHostForUUID(warpMessage.getMinecraftUuid())) == null) {
                 System.out.println("No target for newly-joined user: " + warpMessage.getMinecraftUuid());
                 return;
+            } else {
+                serverInfo = getServerInfoForHost(target);
             }
         } else {
             if (isClearCacheMessage()) {
                 clearCacheForUser(UUID.fromString(warpMessage.getMinecraftUuid()));
-                return;
+                serverInfo = proxy.getServers().get(pluginMain.LOBBY_HOSTNAME);
+                target = null; // assumes a clear cache message will never be cached.
             } else {
                 target = (Inet4Address) Inet4Address.getByName(warpMessage.getHostname());
+                serverInfo = getServerInfoForHost(target);
             }
         }
-        ServerInfo serverInfo = getServerInfoForHost(target);
         warpPlayerToServer(serverInfo);
-        if(warpMessage.isCached()) {
+        if (warpMessage.isCached()) {
             addWarpToCache(target);
         }
     }
 }
-
-
-

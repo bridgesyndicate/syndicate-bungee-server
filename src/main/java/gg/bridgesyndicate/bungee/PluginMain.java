@@ -19,6 +19,8 @@ import java.util.UUID;
 
 public final class PluginMain extends Plugin implements Listener {
 
+    public final String LOBBY_HOSTNAME = "lobby";
+
     @Override
     public void onEnable() {
         ProxyServer proxy = this.getProxy();
@@ -27,6 +29,10 @@ public final class PluginMain extends Plugin implements Listener {
         proxy.getPluginManager().registerListener(this, new KickListener(this));
         proxy.getPluginManager().registerListener(this, new ServerConnectListener(this));
         proxy.getScheduler().runAsync(this, new RabbitListener(this));
+        if (proxy.getServers().get(LOBBY_HOSTNAME) == null){
+            System.out.println("FATAL ERROR: no LOBBY_HOSTNAME defined in bungee configs.");
+            System.exit(-1);
+        }
         System.out.println("init server list: " + proxy.getServers().toString());
     }
 
