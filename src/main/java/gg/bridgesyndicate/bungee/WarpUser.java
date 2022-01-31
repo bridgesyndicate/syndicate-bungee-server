@@ -82,10 +82,8 @@ public class WarpUser {
         } else {
             if (isClearCacheMessage()) {
                 clearCacheForUser(UUID.fromString(warpMessage.getMinecraftUuid()));
-                return;
-            } else {
-                target = (Inet4Address) Inet4Address.getByName(warpMessage.getHostname());
             }
+	    target = (Inet4Address) Inet4Address.getByName(warpMessage.getHostname());
         }
         ServerInfo serverInfo = getServerInfoForHost(target);
         warpPlayerToServer(serverInfo);
