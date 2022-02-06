@@ -79,8 +79,10 @@ public class WarpUser {
         ServerInfo serverInfo;
         if (!hasWarpTarget()) {
             if ((target = getCachedHostForUUID(warpMessage.getMinecraftUuid())) == null) {
-                System.out.println("No target for newly-joined user: " + warpMessage.getMinecraftUuid());
-                return;
+                System.out.println("No target for newly-joined user: " + warpMessage.getMinecraftUuid() +
+                        " sending to lobby.");
+                serverInfo = proxy.getServers().get(pluginMain.LOBBY_HOSTNAME);
+                target = null; // assumes a clear cache message will never be cached.
             } else {
                 serverInfo = getServerInfoForHost(target);
             }
