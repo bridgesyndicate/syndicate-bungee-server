@@ -6,6 +6,7 @@ import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.PostLoginEvent;
 import net.md_5.bungee.api.plugin.Listener;
@@ -14,6 +15,7 @@ import net.md_5.bungee.event.EventHandler;
 import org.apache.http.HttpStatus;
 
 import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.net.URISyntaxException;
 import java.util.UUID;
 
@@ -32,6 +34,16 @@ public final class PluginMain extends Plugin implements Listener {
         if (proxy.getServers().get(LOBBY_HOSTNAME) == null){
             System.out.println("FATAL ERROR: no LOBBY_HOSTNAME defined in bungee configs.");
             System.exit(-1);
+        }
+        if ( System.getenv("LOBBY_HOSTNAME") != null ) {
+            String hostname = System.getenv("LOBBY_HOSTNAME");
+            System.out.println("Using LOBBY_HOSTNAME from env: " + hostname);
+            String hostKey = "lobby";
+            ServerInfo serverInfo = proxy.constructServerInfo(
+                    hostKey, new InetSocketAddress(hostname, 25565),
+                    "The Syndicate Bridge Lobby", false);
+            System.out.println("before change, server list: " + proxy.getServers().toString());
+            proxy.getServers().put(hostKey, serverInfo);
         }
         System.out.println("init server list: " + proxy.getServers().toString());
     }
