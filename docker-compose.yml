@@ -6,7 +6,7 @@ networks:
     driver: bridge
 services:
   bungee:
-    image: 595508394202.dkr.ecr.us-west-2.amazonaws.com/syn-bungee-servers:local
+    image: 595508394202.dkr.ecr.us-west-2.amazonaws.com/syn-bungee-servers:latest
     networks:
       - rabbit
       - mc
