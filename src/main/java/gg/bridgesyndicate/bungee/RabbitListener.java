@@ -46,6 +46,7 @@ public class RabbitListener implements Runnable {
                 URISyntaxException | NoSuchAlgorithmException |
                 KeyManagementException exception) {
             exception.printStackTrace();
+            System.out.println("This is a fatal ERROR.");
         }
         System.out.println("Waiting for warp messages.");
         ObjectMapper objectMapper = new ObjectMapper();
