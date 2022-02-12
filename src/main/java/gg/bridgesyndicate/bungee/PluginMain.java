@@ -78,7 +78,8 @@ public final class PluginMain extends Plugin implements Listener {
                 player.sendMessage(new ComponentBuilder("You are not registered").color(ChatColor.RED).create());
                 player.sendMessage(new ComponentBuilder("Your code is " + kickCode.kickCode).color(ChatColor.RED).create());
                 TextComponent message = new TextComponent("Click me to copy your code");
-                message.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "http://www.bridgesyndicate.gg/?" +
+                final String kickHost = System.getenv("SYNDICATE_KICK_HOST");
+                message.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "http://" + kickHost + "/?" +
                         kickCode.kickCode));
                 player.sendMessage(message);
             } else if (httpStatus == HttpStatus.SC_OK){

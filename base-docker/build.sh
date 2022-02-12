@@ -1,9 +1,9 @@
 #!/bin/bash
 set -ve
-VERSION=03
+VERSION=06 # these are versioned in s3 in case of a fuck up
 REPOSITORY_HOST=595508394202.dkr.ecr.us-west-2.amazonaws.com
 REPOSITORY_URI=$REPOSITORY_HOST/syn-bungee-dist
-S3_BUCKET=syndicate-minecraft-artifacts
+S3_BUCKET=syndicate-versioned-artifacts
 BASE_DOCKER=bungee-home
 
 if [ -d "${BASE_DOCKER}" ]; then
