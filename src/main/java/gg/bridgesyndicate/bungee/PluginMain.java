@@ -23,6 +23,16 @@ public final class PluginMain extends Plugin implements Listener {
 
     public final String LOBBY_HOSTNAME = "lobby";
 
+    private String getProxyDescription() {
+        final String envName = "SYNDICATE_PROXY_DESCRIPTION";
+        String description = "The Syndicate Bridge Lobby";
+        if ( System.getenv(envName) != null ) {
+            description = System.getenv(envName);
+            System.out.println("Using " + envName + " from env: " + description);
+        }
+        return(description);
+    }
+
     @Override
     public void onEnable() {
         ProxyServer proxy = this.getProxy();
@@ -40,8 +50,7 @@ public final class PluginMain extends Plugin implements Listener {
             System.out.println("Using LOBBY_HOSTNAME from env: " + hostname);
             String hostKey = "lobby";
             ServerInfo serverInfo = proxy.constructServerInfo(
-                    hostKey, new InetSocketAddress(hostname, 25565),
-                    "The Syndicate Bridge Lobby", false);
+                    hostKey, new InetSocketAddress(hostname, 25565), getProxyDescription(), false);
             System.out.println("before change, server list: " + proxy.getServers().toString());
             proxy.getServers().put(hostKey, serverInfo);
         }
