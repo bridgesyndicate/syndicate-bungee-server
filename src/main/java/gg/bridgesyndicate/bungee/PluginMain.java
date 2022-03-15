@@ -84,13 +84,9 @@ public final class PluginMain extends Plugin implements Listener {
 
             if (httpStatus == HttpStatus.SC_NOT_FOUND) {
                 KickCode kickCode = KickCode.deserialize(body);
-                player.sendMessage(new ComponentBuilder("You are not registered").color(ChatColor.RED).create());
-                player.sendMessage(new ComponentBuilder("Your code is " + kickCode.kickCode).color(ChatColor.RED).create());
-                TextComponent message = new TextComponent("Click me to copy your code");
                 final String kickHost = System.getenv("SYNDICATE_KICK_HOST");
-                message.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "http://" + kickHost + "/?" +
-                        kickCode.kickCode));
-                player.sendMessage(message);
+                ChatMessages.sendUnverifiedMessages(player, kickCode, kickHost);
+
             } else if (httpStatus == HttpStatus.SC_OK){
                 player.sendMessage(new ComponentBuilder("Welcome registered player").color(ChatColor.WHITE).create());
                 WarpMessage warpMessage = new WarpMessage(playerUUID);
