@@ -28,10 +28,10 @@ public class ChatMessages {
                 "\n" +
                 ChatColor.GRAY + "Then, use " +
                 ChatColor.GREEN + "/verify " +
-                ChatColor.GRAY + "in the Discord to register.\n");
+                ChatColor.GRAY + "in the Discord to register." +
+                "\n");
         // useVerifyMessage.setClickEvent(to whatever the discord link would be);
         player.sendMessage(useVerifyMessage);
-
     }
 
 }
