@@ -95,6 +95,7 @@ public final class PluginMain extends Plugin implements Listener {
             } else {
                 System.out.println("status was " + httpStatus);
                 ChatMessages.sendErrorMessage(player);
+                
             }
         } catch (IOException | URISyntaxException e) {
             e.printStackTrace();
