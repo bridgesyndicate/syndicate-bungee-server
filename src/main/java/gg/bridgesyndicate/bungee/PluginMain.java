@@ -88,12 +88,13 @@ public final class PluginMain extends Plugin implements Listener {
                 ChatMessages.sendUnverifiedMessages(player, kickCode, kickHost);
 
             } else if (httpStatus == HttpStatus.SC_OK){
-                player.sendMessage(new ComponentBuilder("Welcome registered player").color(ChatColor.WHITE).create());
                 WarpMessage warpMessage = new WarpMessage(playerUUID);
                 new WarpUser(this, warpMessage).warp();
+                ChatMessages.sendVerifiedMessage(player);
+
             } else {
                 System.out.println("status was " + httpStatus);
-                player.sendMessage(new ComponentBuilder("Error. Some status other than 404 or 200.").color(ChatColor.WHITE).create());
+                ChatMessages.sendErrorMessage(player);
             }
         } catch (IOException | URISyntaxException e) {
             e.printStackTrace();

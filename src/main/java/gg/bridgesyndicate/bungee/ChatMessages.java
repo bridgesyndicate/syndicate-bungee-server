@@ -9,7 +9,6 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 public class ChatMessages {
 
     public static void sendUnverifiedMessages(ProxiedPlayer player, KickCode kickCode, String kickHost) {
-
         player.sendMessage(new ComponentBuilder(
                 "\n" +
                 ChatColor.RED + "You must be verified in order to play.").create());
@@ -32,6 +31,22 @@ public class ChatMessages {
                 "\n");
         // useVerifyMessage.setClickEvent(to whatever the discord link would be);
         player.sendMessage(useVerifyMessage);
+    }
+
+    public static void sendVerifiedMessage(ProxiedPlayer player) {
+        player.sendMessage(new ComponentBuilder(
+                "\n" +
+                ChatColor.GRAY + "You are " +
+                ChatColor.AQUA + "verified " +
+                ChatColor.GRAY + "and ready to play." +
+                "\n").create());
+    }
+
+    public static void sendErrorMessage(ProxiedPlayer player) {
+        player.sendMessage(new ComponentBuilder(
+                "\n" +
+                ChatColor.RED + "Error. Some status other than 404 or 200." +
+                "\n").create());
     }
 
 }
