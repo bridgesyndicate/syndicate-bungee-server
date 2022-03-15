@@ -15,7 +15,7 @@ public class ChatMessages {
 
         TextComponent copyYourCodeMessage = new TextComponent(
                 "\n" +
-                ChatColor.GREEN + "--> Click here to copy your code! <--");
+                ChatColor.AQUA + "--> Click here to copy your code! <--");
         copyYourCodeMessage.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL,
                 "http://" +
                 kickHost +
@@ -26,7 +26,7 @@ public class ChatMessages {
         TextComponent useVerifyMessage = new TextComponent(
                 "\n" +
                 ChatColor.GRAY + "Then, use " +
-                ChatColor.GREEN + "/verify " +
+                ChatColor.AQUA + "/verify " +
                 ChatColor.GRAY + "in the Discord to register." +
                 "\n");
         // useVerifyMessage.setClickEvent(to whatever the discord link would be);
