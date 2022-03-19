@@ -86,27 +86,32 @@ public final class PluginMain extends Plugin implements Listener {
                 KickCode kickCode = KickCode.deserialize(body);
                 ChatMessages.sendUnverifiedMessages(player, kickCode);
 
-            } else if (httpStatus == HttpStatus.SC_OK){ // 200
+            } else if (httpStatus == HttpStatus.SC_OK) { // 200
                 WarpMessage warpMessage = new WarpMessage(playerUUID);
                 new WarpUser(this, warpMessage).warp();
                 ChatMessages.sendVerifiedMessage(player);
 
-            } else if (httpStatus == HttpStatus.SC_BAD_REQUEST){ // 400
-                String error = "400: Bad Request";
+            } else {
+                System.out.println("status was " + httpStatus);
+                String error;
+                switch(httpStatus) {
+                    case (HttpStatus.SC_BAD_REQUEST): // 400
+                        error = "400: Bad Request";
+                        break;
+                    case (HttpStatus.SC_FORBIDDEN): // 403
+                        error = "403: Forbidden";
+                        break;
+                    case (HttpStatus.SC_INTERNAL_SERVER_ERROR): // 500
+                        error = "500: Internal Server Error";
+                        break;
+                    case (HttpStatus.SC_BAD_GATEWAY): // 502
+                        error = "502: Bad Gateway";
+                        break;
+                    default: // some other error
+                        error = "unexpected status. Something went wrong";
+                        break;
+                }
                 ChatMessages.sendErrorMessage(player, error);
-                
-            } else if (httpStatus == HttpStatus.SC_FORBIDDEN){ // 403
-                String error = "403: Forbidden";
-                ChatMessages.sendErrorMessage(player, error);
-
-            } else if (httpStatus == HttpStatus.SC_INTERNAL_SERVER_ERROR){ // 500
-                String error = "500: Internal Server Error";
-                ChatMessages.sendErrorMessage(player, error);
-
-            } else if (httpStatus == HttpStatus.SC_BAD_GATEWAY){ // 502
-                String error = "502: Bad Gateway";
-                ChatMessages.sendErrorMessage(player, error);
-                
             }
         } catch (IOException | URISyntaxException e) {
             e.printStackTrace();
