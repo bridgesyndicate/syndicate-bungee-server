@@ -8,7 +8,9 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 public class ChatMessages {
 
-    public static void sendUnverifiedMessages(ProxiedPlayer player, KickCode kickCode, String kickHost) {
+    public static void sendUnverifiedMessages(ProxiedPlayer player, KickCode kickCode) {
+        final String kickHost = System.getenv("SYNDICATE_KICK_HOST");
+
         player.sendMessage(new ComponentBuilder(
                 "\n" +
                 ChatColor.RED + "You must be verified in order to play.").create());

@@ -84,8 +84,7 @@ public final class PluginMain extends Plugin implements Listener {
 
             if (httpStatus == HttpStatus.SC_NOT_FOUND) {
                 KickCode kickCode = KickCode.deserialize(body);
-                final String kickHost = System.getenv("SYNDICATE_KICK_HOST");
-                ChatMessages.sendUnverifiedMessages(player, kickCode, kickHost);
+                ChatMessages.sendUnverifiedMessages(player, kickCode);
 
             } else if (httpStatus == HttpStatus.SC_OK){
                 WarpMessage warpMessage = new WarpMessage(playerUUID);
