@@ -82,18 +82,30 @@ public final class PluginMain extends Plugin implements Listener {
             System.out.println("status was " + httpStatus);
             System.out.println(body);
 
-            if (httpStatus == HttpStatus.SC_NOT_FOUND) {
+            if (httpStatus == HttpStatus.SC_NOT_FOUND) { // 404
                 KickCode kickCode = KickCode.deserialize(body);
                 ChatMessages.sendUnverifiedMessages(player, kickCode);
 
-            } else if (httpStatus == HttpStatus.SC_OK){
+            } else if (httpStatus == HttpStatus.SC_OK){ // 200
                 WarpMessage warpMessage = new WarpMessage(playerUUID);
                 new WarpUser(this, warpMessage).warp();
                 ChatMessages.sendVerifiedMessage(player);
 
-            } else {
-                System.out.println("status was " + httpStatus);
-                ChatMessages.sendErrorMessage(player);
+            } else if (httpStatus == HttpStatus.SC_BAD_REQUEST){ // 400
+                String error = "400: Bad Request";
+                ChatMessages.sendErrorMessage(player, error);
+                
+            } else if (httpStatus == HttpStatus.SC_FORBIDDEN){ // 403
+                String error = "403: Forbidden";
+                ChatMessages.sendErrorMessage(player, error);
+
+            } else if (httpStatus == HttpStatus.SC_INTERNAL_SERVER_ERROR){ // 500
+                String error = "500: Internal Server Error";
+                ChatMessages.sendErrorMessage(player, error);
+
+            } else if (httpStatus == HttpStatus.SC_BAD_GATEWAY){ // 502
+                String error = "502: Bad Gateway";
+                ChatMessages.sendErrorMessage(player, error);
                 
             }
         } catch (IOException | URISyntaxException e) {

@@ -44,10 +44,11 @@ public class ChatMessages {
                 "\n").create());
     }
 
-    public static void sendErrorMessage(ProxiedPlayer player) {
+    public static void sendErrorMessage(ProxiedPlayer player, String error) {
         player.sendMessage(new ComponentBuilder(
                 "\n" +
-                ChatColor.RED + "Error. Some status other than 404 or 200." +
+                ChatColor.RED + "Error. Status was " +
+                error +
                 "\n").create());
     }
 
