@@ -8,6 +8,8 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 public class ChatMessages {
 
+    private static final String BUCKYTOUR_DISCORD_INVITE_LINK = "https://discord.gg/YNXtdEBEPv";
+
     public static void sendUnverifiedMessages(ProxiedPlayer player, KickCode kickCode) {
         final String kickHost = System.getenv("SYNDICATE_KICK_HOST");
 
@@ -17,7 +19,7 @@ public class ChatMessages {
 
         TextComponent copyYourCodeMessage = new TextComponent(
                 "\n" +
-                ChatColor.AQUA + "--> Click here to copy your code! <--");
+                ChatColor.AQUA + "--> Click HERE, then click YES <--");
         copyYourCodeMessage.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL,
                 "http://" +
                 kickHost +
@@ -31,7 +33,8 @@ public class ChatMessages {
                 ChatColor.AQUA + "/verify " +
                 ChatColor.GRAY + "in the Discord to register." +
                 "\n");
-        // useVerifyMessage.setClickEvent(to whatever the discord link would be);
+        useVerifyMessage.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL,
+                BUCKYTOUR_DISCORD_INVITE_LINK));
         player.sendMessage(useVerifyMessage);
     }
 
