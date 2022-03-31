@@ -47,6 +47,7 @@ public class RabbitListener implements Runnable {
                 KeyManagementException exception) {
             exception.printStackTrace();
             System.out.println("This is a fatal ERROR.");
+            System.exit(-1);
         }
         System.out.println("Waiting for warp messages.");
         ObjectMapper objectMapper = new ObjectMapper();
