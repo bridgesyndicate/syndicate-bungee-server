@@ -30,7 +30,6 @@ public final class PluginMain extends Plugin implements Listener {
             description = System.getenv(envName);
             System.out.println("Using " + envName + " from env: " + description);
         }
-        description = "Bridge: Emerald Series Lobby"; // temporary
         return(description);
     }
 
