@@ -1,6 +1,6 @@
 #!/bin/bash
 set -ve
-VERSION=07 # these are versioned in s3 in case of a fuck up
+VERSION=08 # these are versioned in s3 in case of a fuck up
 REPOSITORY_HOST=595508394202.dkr.ecr.us-west-2.amazonaws.com
 REPOSITORY_URI=$REPOSITORY_HOST/syn-bungee-dist
 S3_BUCKET=syndicate-versioned-artifacts

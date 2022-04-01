@@ -25,7 +25,7 @@ public final class PluginMain extends Plugin implements Listener {
 
     private String getProxyDescription() {
         final String envName = "SYNDICATE_PROXY_DESCRIPTION";
-        String description = "The Syndicate Bridge Lobby";
+        String description = "Bridge: Emerald Series Lobby";
         if ( System.getenv(envName) != null ) {
             description = System.getenv(envName);
             System.out.println("Using " + envName + " from env: " + description);
