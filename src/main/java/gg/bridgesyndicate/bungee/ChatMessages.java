@@ -8,7 +8,7 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 public class ChatMessages {
 
-    private static final String BUCKYTOUR_DISCORD_INVITE_LINK = "https://discord.gg/YNXtdEBEPv";
+    private static final String SYNDICATE_DISCORD_INVITE_LINK = "https://discord.gg/58yu8pDmsu";
 
     public static void sendUnverifiedMessages(ProxiedPlayer player, KickCode kickCode) {
         final String kickHost = System.getenv("SYNDICATE_KICK_HOST");
@@ -19,7 +19,7 @@ public class ChatMessages {
 
         TextComponent copyYourCodeMessage = new TextComponent(
                 "\n" +
-                ChatColor.AQUA + "--> Click HERE, then click YES <--");
+                ChatColor.BLUE + "--> Click HERE, then click YES <--");
         copyYourCodeMessage.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL,
                 "http://" +
                 kickHost +
@@ -30,11 +30,11 @@ public class ChatMessages {
         TextComponent useVerifyMessage = new TextComponent(
                 "\n" +
                 ChatColor.GRAY + "Then, use " +
-                ChatColor.AQUA + "/verify " +
+                ChatColor.BLUE + "/verify " +
                 ChatColor.GRAY + "in the Discord to register." +
                 "\n");
         useVerifyMessage.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL,
-                BUCKYTOUR_DISCORD_INVITE_LINK));
+                SYNDICATE_DISCORD_INVITE_LINK));
         player.sendMessage(useVerifyMessage);
     }
 
@@ -42,7 +42,7 @@ public class ChatMessages {
         player.sendMessage(new ComponentBuilder(
                 "\n" +
                 ChatColor.GRAY + "You are " +
-                ChatColor.AQUA + "verified " +
+                ChatColor.BLUE + "verified " +
                 ChatColor.GRAY + "and ready to play." +
                 "\n").create());
     }
