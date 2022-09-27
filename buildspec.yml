@@ -26,7 +26,6 @@ phases:
       - echo Pushing the Docker images...
       - docker push $REPOSITORY_URI:latest
       - aws ecs update-service --region us-west-2 --cluster SyndicateECSCluster --service arn:aws:ecs:us-west-2:595508394202:service/SyndicateECSCluster/SyndicateBungeeECSServiceV03 --force-new-deployment
-      - aws ecs update-service --region us-east-2 --cluster SyndicateECSCluster --service arn:aws:ecs:us-east-2:595508394202:service/SyndicateECSCluster/SyndicateBungeeECSServiceV03 --force-new-deployment
 artifacts:
   files:
     - "**/target/*"
