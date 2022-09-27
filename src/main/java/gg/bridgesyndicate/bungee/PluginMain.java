@@ -94,12 +94,14 @@ public final class PluginMain extends Plugin implements Listener {
             } else {
                 System.out.println("status was " + httpStatus);
                 String error;
+                boolean disconnectPlayer = false;
                 switch(httpStatus) {
                     case (HttpStatus.SC_BAD_REQUEST): // 400
                         error = "400: Bad Request";
                         break;
                     case (HttpStatus.SC_FORBIDDEN): // 403
                         error = "403: Forbidden";
+                        disconnectPlayer = true;
                         break;
                     case (HttpStatus.SC_INTERNAL_SERVER_ERROR): // 500
                         error = "500: Internal Server Error";
@@ -112,6 +114,8 @@ public final class PluginMain extends Plugin implements Listener {
                         break;
                 }
                 ChatMessages.sendErrorMessage(player, error);
+                if (disconnectPlayer)
+                    player.disconnect(new TextComponent( "You are banned" ));
             }
         } catch (IOException | URISyntaxException e) {
             e.printStackTrace();
