@@ -1,6 +1,7 @@
 package gg.bridgesyndicate.bungee;
 
 import net.md_5.bungee.api.ProxyServer;
+import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
@@ -64,6 +65,16 @@ public class WarpUser {
         if ( (player = proxy.getPlayer(UUID.fromString(warpMessage.getMinecraftUuid()))) != null){
             System.out.println("Found " + warpMessage.getMinecraftUuid() + " as " + player.getDisplayName() + " warping to "
                     + serverInfo.getName());
+            doWarp(player, serverInfo);
+        }
+    }
+
+    private void doWarp(ProxiedPlayer player, ServerInfo serverInfo) {
+        if (serverInfo.getName().equals("0.0.0.0")) {
+            System.out.println("Warp is to 4 zeros. Disconnect banned player");
+            player.disconnect(new TextComponent( "You are banned" ));
+        } else {
+            System.out.println("Do player.connect()");
             player.connect(serverInfo);
         }
     }
